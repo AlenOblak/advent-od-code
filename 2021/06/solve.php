@@ -1,4 +1,4 @@
-<?
+<?php
 
 $lines = file('input.txt', FILE_IGNORE_NEW_LINES);
 
@@ -39,5 +39,3 @@ for($day = 81; $day <= 256; $day++) {
 }
 
 echo array_sum($fish_by_day)."\n";
-
-?>

@@ -1,18 +1,18 @@
-<?
+<?php
 
 $lines = file('input.txt');
 
 // part 1
 $gamma = '';
 $epsilon = '';
+$bit = array_fill(0, 12, 0);
 
-for ($i = 0; $i < count($lines); $i++) {
-	for($j = 0; $j < 12; $j++) {
+for ($i = 0; $i < count($lines); $i++)
+	for($j = 0; $j < 12; $j++)
 		if($lines[$i][$j] == '1')
 			$bit[$j]++;
-	}
-}
-for($j = 0; $j < 12; $j++) {
+
+for($j = 0; $j < 12; $j++)
 	if($bit[$j] > 500) {
 		$gamma .= '1';
 		$epsilon .= '0';
@@ -20,7 +20,7 @@ for($j = 0; $j < 12; $j++) {
 		$gamma .= '0';
 		$epsilon .= '1';
 	}
-}
+
 echo (bindec($gamma)*bindec($epsilon))."\n";
 
 // part 2
@@ -62,5 +62,3 @@ function filter_number($numbers, $type, $position) {
 			else
 				return filter_number($num_0, $type, $position + 1);
 }
-
-?>

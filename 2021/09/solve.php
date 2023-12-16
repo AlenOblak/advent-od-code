@@ -1,4 +1,4 @@
-<?
+<?php
 
 $lines = file('input.txt', FILE_IGNORE_NEW_LINES);
 
@@ -10,6 +10,7 @@ foreach($lines as $line) {
 	$points[] = str_split($line);
 }
 
+$score = 0;
 for($i = 0; $i < $x; $i++) {
 	for($j = 0; $j < $y; $j++) {
 		if($i == 0 || $points[$i][$j] < $points[$i-1][$j])
@@ -80,5 +81,3 @@ foreach($basins as $basin) {
 rsort($basin_sizes, SORT_NUMERIC );
 
 echo $basin_sizes[0]*$basin_sizes[1]*$basin_sizes[2]."\n";
-
-?>

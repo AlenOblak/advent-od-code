@@ -1,4 +1,4 @@
-<?
+<?php
 
 $lines = file('input.txt', FILE_IGNORE_NEW_LINES);
 
@@ -39,5 +39,3 @@ foreach($crab_by_pos as $guess_position => $j) {
 }
 
 echo $best_score."\n";
-
-?>

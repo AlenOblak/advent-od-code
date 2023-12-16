@@ -1,8 +1,9 @@
-<?
+<?php
 
 $lines = file('input.txt', FILE_IGNORE_NEW_LINES);
 
 // part 1
+$score = 0;
 foreach($lines as $line) {
 	$stack = array();
 	$corrupted = false;
@@ -64,5 +65,3 @@ foreach($incomplete as $line) {
 }
 sort($scores);
 echo $scores[(count($scores)-1)/2]."\n";
-
-?>

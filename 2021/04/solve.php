@@ -1,4 +1,4 @@
-<?
+<?php
 
 $lines = file('input.txt', FILE_IGNORE_NEW_LINES);
 
@@ -109,5 +109,3 @@ foreach($drawn_numbers as $drawn_number) {
 }
 
 echo $last_score."\n";
-
-?>

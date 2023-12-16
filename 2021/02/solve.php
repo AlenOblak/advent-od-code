@@ -1,4 +1,4 @@
-<?
+<?php
 
 $lines = file('input.txt');
 
@@ -33,5 +33,3 @@ for ($i = 0; $i < count($lines); $i++) {
 
 }
 echo ($horizontal * $vertical)."\n";
-
-?>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 $lines = file('input.txt', FILE_IGNORE_NEW_LINES);
 
@@ -8,6 +8,7 @@ foreach($lines as $line) {
 	$entry = array(explode(' ', trim($temp[0])), explode(' ', trim($temp[1])));
 	$entries[] = $entry;
 }
+$count = 0;
 foreach($entries as $entry) {
 	foreach($entry[1] as $signal) {
 		if(strlen($signal) == 2 || strlen($signal) == 3 || strlen($signal) == 4 || strlen($signal) == 7)
@@ -17,6 +18,7 @@ foreach($entries as $entry) {
 echo $count."\n";
 
 // part 2
+$sum = 0;
 foreach($entries as $entry) {
 	// determine signal for keys 1, 4, 7, 8
 	foreach($entry[0] as $signal) {
@@ -110,5 +112,3 @@ function sort_signal($signal) {
 	sort($chars);
 	return implode($chars);
 }
-
-?>

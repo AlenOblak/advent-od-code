@@ -1,4 +1,4 @@
-<?
+<?php
 
 $lines = file('input.txt');
 
@@ -15,5 +15,3 @@ for ($i = 3; $i < count($lines); $i++)
 	if(intval($lines[$i-3]) < intval($lines[$i]))
 		$number++;
 echo $number."\n";
-
-?>
