@@ -1,135 +1,67 @@
 <?php
 
-$lines = file('input.txt', FILE_IGNORE_NEW_LINES);
+$lines = file('input_small.txt', FILE_IGNORE_NEW_LINES);
 
+$rock = array();
 $map = array();
-$positions = array();
-foreach ($lines as $line) {
-    $map[] = str_split($line);
+foreach ($lines as $y => $line) {
+    foreach (str_split($line) as $x => $c) {
+        if($c == '#')
+            $rock[$y][$x] = true;
+        elseif($c == 'S')
+            $map[$y.':'.$x] = true;
+    }
 }
-$max_y = count($map);
-$max_x = count($map[0]);
+
+$max_y = count($lines);
+$max_x = strlen($lines[0]);
+
+$map1 = array();
+$map2 = $map;
 
 // part 1
-$res = 0;
-for($i = 1; $i <= 64;$i++)
-    $res = step();
-echo $res."\n";
+$sum1 = 1;
+$sum2 = 0;
+for($i = 1; $i <= 64; $i++) {
+    $step = step();
+    if($i % 2 == 0) {
+        $sum1 += $step;
+        echo $i.' '.$step.' '.$sum1."\n";
+    } else {
+        $sum2 += $step;
+        echo $i.' '.$step.' '.$sum2."\n";
+    }
+}
 
 function step() {
-    global $map, $max_x, $max_y;
+    global $rock, $map1, $map2, $max_x, $max_y;
 
     $new_map = array();
-    $pos = array();
-    foreach ($map as $y => $line) {
-        foreach ($line as $x => $c){
-            if($c == '#')
-                $new_map[$y][$x] = '#';
-            if($c == 'S' || $c == 'O')
-                $pos[] = array($y, $x);
-        }
-    }
 
-    foreach ($pos as $p) {
-        if($p[0] > 0 && (!isset($new_map[$p[0]-1][$p[1]]) || $new_map[$p[0]-1][$p[1]] != '#'))
-            $new_map[$p[0]-1][$p[1]] = 'O';
-        if($p[0] < $max_y-1 && (!isset($new_map[$p[0]+1][$p[1]]) || $new_map[$p[0]+1][$p[1]] != '#'))
-            $new_map[$p[0]+1][$p[1]] = 'O';
-        if($p[1] > 0 && (!isset($new_map[$p[0]][$p[1]-1]) || $new_map[$p[0]][$p[1]-1] != '#'))
-            $new_map[$p[0]][$p[1]-1] = 'O';
-        if($p[1] < $max_x-1 && (!isset($new_map[$p[0]][$p[1]+1]) || $new_map[$p[0]][$p[1]+1] != '#'))
-            $new_map[$p[0]][$p[1]+1] = 'O';
+    foreach ($map2 as $p => $v) {
+        $p = explode(':', $p);
+        if(!isset($rock[($p[0]-1) % $max_y][$p[1] % $max_x]) && !isset($map1[($p[0]-1).':'.$p[1]]))
+            $new_map[($p[0]-1).':'.$p[1]] = true;
+        if(!isset($rock[($p[0]+1) % $max_y][$p[1] % $max_x]) && !isset($map1[($p[0]+1).':'.$p[1]]))
+            $new_map[($p[0]+1).':'.$p[1]] = true;
+        if(!isset($rock[$p[0] % $max_y][($p[1]-1)  % $max_x]) && !isset($map1[$p[0].':'.($p[1]-1)]))
+            $new_map[$p[0].':'.($p[1]-1)] = true;
+        if(!isset($rock[$p[0] % $max_y][($p[1]+1)  % $max_x]) && !isset($map1[$p[0].':'.($p[1]+1)]))
+            $new_map[$p[0].':'.($p[1]+1)] = true;
+        /*
+        if($p[0] > 0 && !isset($rock[$p[0]-1][$p[1]]) && !isset($map1[($p[0]-1).':'.$p[1]]))
+            $new_map[($p[0]-1).':'.$p[1]] = true;
+        if($p[0] < $max_y-1 && !isset($rock[$p[0]+1][$p[1]]) && !isset($map1[($p[0]+1).':'.$p[1]]))
+            $new_map[($p[0]+1).':'.$p[1]] = true;
+        if($p[1] > 0 && !isset($rock[$p[0]][$p[1]-1]) && !isset($map1[$p[0].':'.($p[1]-1)]))
+            $new_map[$p[0].':'.($p[1]-1)] = true;
+        if($p[1] < $max_x-1 && !isset($rock[$p[0]][$p[1]+1]) && !isset($map1[$p[0].':'.($p[1]+1)]))
+            $new_map[$p[0].':'.($p[1]+1)] = true;
+        */
     }
-    $map = $new_map;
+    $map1 = $map2;
+    $map2 = $new_map;
 
-    $count = 0;
-    foreach ($new_map as $y => $line) {
-        foreach ($line as $x => $c){
-            if($c == 'O')
-                $count++;
-        }
-    }
-    return $count;
+    return count($new_map);
 }
-
-exit;
-// part 2 - not done
-
-$res = 0;
-for($i = 1; $i <= 64;$i++){
-    $res = step2();
-    printmap();
-    echo $i.' '.$res."\n";
-}
-
-function step2() {
-    global $map, $max_x, $max_y;
-    global $positions;
-
-    $new_map = array();
-    foreach ($map as $y => $line) {
-        foreach ($line as $x => $c){
-            if($c == '#')
-                $new_map[$y][$x] = '#';
-            if($c == 'S')
-                $positions[$y][$x] = 1;
-        }
-    }
-
-    $new_positions = array();
-    foreach ($positions as $y => $p) {
-        foreach ($p as $x => $num) {
-            //
-            if($y > 0 && (!isset($new_map[$y-1][$x]) || $new_map[$y-1][$x] != '#'))
-                $new_positions[$y-1][$x] = max($new_positions[$y-1][$x] ?? 0, $num);
-            if($y == 0 && (!isset($new_map[$max_y-1][$x]) || $new_map[$max_y-1][$x] != '#'))
-                $new_positions[$max_y-1][$x] = ($new_positions[$max_y-1][$x] ?? 0) + 1;
-            //
-            if($y < $max_y-1 && (!isset($new_map[$y+1][$x]) || $new_map[$y+1][$x] != '#'))
-                $new_positions[$y+1][$x] = max($new_positions[$y+1][$x] ?? 0, $num);
-            if($y == $max_y-1 && (!isset($new_map[0][$x]) || $new_map[0][$x] != '#'))
-                $new_positions[0][$x] = ($new_positions[0][$x] ?? 0) + 1;
-            //
-            if($x > 0 && (!isset($new_map[$y][$x-1]) || $new_map[$y][$x-1] != '#'))
-                $new_positions[$y][$x-1] = max($new_positions[$y][$x-1] ?? 0, $num);
-            if($x == 0 && (!isset($new_map[$y][$max_x-1]) || $new_map[$y][$max_x-1] != '#'))
-                $new_positions[$y][$max_x-1] = ($new_positions[$y][$max_x-1] ?? 0) + 1;
-            //
-            if($x < $max_x-1 && (!isset($new_map[$y][$x+1]) || $new_map[$y][$x+1] != '#'))
-                $new_positions[$y][$x+1] = max($new_positions[$y][$x+1] ?? 0, $num);
-            if($x == $max_x-1 && (!isset($new_map[$y][0]) || $new_map[$y][0] != '#'))
-                $new_positions[$y][0] = ($new_positions[$y][0] ?? 0) + 1;
-        }
-    }
-
-    $map = $new_map;
-    $positions = $new_positions;
-
-    $count = 0;
-    foreach ($positions as $p) {
-        foreach ($p as $num) {
-            $count += $num;
-        }
-    }
-    return $count;
-}
-
-function printmap()
-{
-    global $map, $max_y, $max_x, $positions;
-    for($y = 0; $y < $max_y; $y++) {
-        for($x = 0; $x < $max_x; $x++) {
-            if(isset($map[$y][$x]) && $map[$y][$x] == '#')
-                echo '#';
-            elseif(isset($positions[$y][$x]))
-                echo $positions[$y][$x];
-            else
-                echo '.';
-        }
-        echo "\n";
-    }
-    echo "\n";
-}
-
-
 
