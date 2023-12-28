@@ -1,0 +1,12 @@
+X + T1 * VX - R1X - (T1 * R1XV) = 0
+X + T2 * VX - R2X - (T2 * R2XV) = 0
+X + T3 * VX - R3X - (T3 * R3XV) = 0
+
+Y + T1 * VY - R1Y - (T1 * R1YV) = 0
+Y + T2 * VY - R2Y - (T2 * R2YV) = 0
+Y + T3 * VY - R3Y - (T3 * R3YV) = 0
+
+Z + T1 * VZ - R1Z - (T1 * R1ZV) = 0
+Z + T2 * VZ - R2Z - (T2 * R2ZV) = 0
+Z + T3 * VZ - R3Z - (T3 * R3ZV) = 0
+
