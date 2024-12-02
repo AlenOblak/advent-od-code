@@ -1,3 +1,3 @@
-# Advent of code
+# 🎄 Advent of code 🎅
 
-Solutions to challenges in [Advent of code](https://adventofcode.com/) in PHP.
+Solutions to challenges in [Advent of code](https://adventofcode.com/) in PHP or Python.
